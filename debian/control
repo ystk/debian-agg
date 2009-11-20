@@ -1,0 +1,21 @@
+Source: agg
+Priority: optional
+Maintainer: Andrea Veri <andrea.veri89@gmail.com>
+Build-Depends: debhelper (>= 7), dpatch, autoconf, automake1.9, libsdl1.2-dev, libfreetype6-dev, pkg-config, libtool, libx11-dev
+Standards-Version: 3.8.3
+DM-Upload-Allowed: yes
+Section: libs
+
+Package: libagg-dev
+Section: libdevel
+Conflicts: libagg23-dev
+Architecture: any
+Description: The AntiGrain Geometry graphical toolkit (development files)
+ Anti-Grain Geometry (AGG) is a general purpose graphical toolkit written
+ completely in standard and platform independent C++. It can be used in many
+ areas of computer programming where high quality 2D graphics is an essential
+ part of the project.
+ .
+ This package contains the development files for building applications using
+ agg.
+

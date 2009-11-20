@@ -1,0 +1,5 @@
+01_disable_gpc
+02_maintainer_mode.dpatch
+03_pkg_config_pic.dpatch
+04_no_rpath
+05_fix_recursion_crash.dpatch
