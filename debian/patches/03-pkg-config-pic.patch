@@ -1,10 +1,6 @@
-#! /bin/sh /usr/share/dpatch/dpatch-run
-## 03_pkg_config_pic.dpatch by  <rene@zero>
-##
-## All lines beginning with `## DP:' are a description of the patch.
-## DP: No description.
+Author: Unknown
+Description: Correct library name from agg to agg_pic for link
 
-@DPATCH@
 diff -urNad agg-2.3~/libagg.pc.in agg-2.3/libagg.pc.in
 --- agg-2.3~/libagg.pc.in	2005-02-18 03:27:48.000000000 +0100
 +++ agg-2.3/libagg.pc.in	2006-03-01 18:08:26.906950512 +0100

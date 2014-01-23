@@ -1,34 +1,56 @@
-This package was debianized by Rene Engelhard <rene@debian.org> on
-Tue, 22 Nov 2005 23:03:50 +0100.
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0
+Upstream-Name: agg
+Upstream-Contact: Maxim Shemanarev <mcseem@antigrain.com>
+Source: http://www.antigrain.com
 
-It was downloaded from http://www.antigrain.com
+Files: *
+Copyright:
+  2002-2006 Maxim Shemanarev <mcseem@antigrain.com>
+License: GPL-2+
 
-Copyright Holders: Copyright (C) Maxim Shemanarev <mcseem@antigrain.com>
-                   Copyright (C) 2004 Stephan Assmus (superstippi@gmx.de)
-                   Copyright (C) 2004 Steven Solie
-                   Copyright (C) 2004 Mauricio Piacentini (SDL Support)
-                   Copyright (C) 2003 Hansruedi Baer (MacOS support, baer@karto.baug.eth.ch)                 
+Files: include/platform/mac/agg_mac_pmap.h
+  src/platform/mac/agg_platform_support.cpp
+Copyright:
+  2002-2006 Maxim Shemanarev <mcseem@antigrain.com>
+  2004 2003 Hansruedi Baer <baer@karto.baug.eth.ch>
+License: GPL-2+
 
-License:
+Files: src/platform/sdl/agg_platform_support.cpp
+Copyright:
+  2002-2006 Maxim Shemanarev <mcseem@antigrain.com>
+  2004 Mauricio Piacentini
+License: GPL-2+
 
-Anti-Grain Geometry (AGG) - Version 2.5
-A high quality rendering engine for C++
-Copyright (C) 2002-2006 Maxim Shemanarev
+Files: src/platform/BeOS/agg_platform_support.cpp
+Copyright:
+  2002-2006 Maxim Shemanarev <mcseem@antigrain.com>
+  2004 Stephan Assmus <superstippi@gmx.de>
+License: GPL-2+
 
-AGG is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
- 
-AGG is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
- 
-You should have received a copy of the GNU General Public License
-along with AGG; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
-MA 02110-1301, USA.
+Files: src/platform/AmigaOS/agg_platform_support.cpp
+Copyright:
+  2002-2006 Maxim Shemanarev <mcseem@antigrain.com>
+  2004 Steven Solie
+License: GPL-2+
 
-The Debian packaging is (C) 2009, Andrea Veri <andrea.veri89@gmail.com> and
-is licensed under the GPL, see `/usr/share/common-licenses/GPL'.
+Files: debian/*
+Copyright:
+  2012 Andrea Veri <and@debian.org>
+License: GPL-2+
+
+License: GPL-2+
+ This package is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+ .
+ This package is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ .
+ You should have received a copy of the GNU General Public License
+ along with this program. If not, see <http://www.gnu.org/licenses/>
+ .
+ On Debian systems, the complete text of the GNU General
+ Public License version 2 can be found in "/usr/share/common-licenses/GPL-2".

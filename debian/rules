@@ -1,82 +1,65 @@
 #!/usr/bin/make -f
 
-# Uncomment this to turn on verbose mode.
-#export DH_VERBOSE=1
+FLAVOURS := pic nonpic
 
-CFLAGS = -Wall -g
+CONFIGURE_ARGS_COMMON := --prefix=/usr --disable-examples --x-includes=/usr/include --x-libraries=/usr/lib
+CONFIGURE_ARGS_pic := -with-pic
+CONFIGURE_ARGS_nonpic := --disable-gpc
+DESTDIR_nonpic := debian/libagg-dev
+DESTDIR_pic := debian/tmp-pic
 
-include /usr/share/dpatch/dpatch.make
+builddir = $(patsubst %,obj-%,$(1))
 
-# shared library versions, option 1
-#version=2.0.5
-#major=2
-# option 2, assuming the library is created as src/.libs/libfoo.so.2.0.5 or so
-#version=`ls src/.libs/lib*.so.* | \
-# awk '{if (match($$0,/[0-9]+\.[0-9]+\.[0-9]+$$/)) print substr($$0,RSTART)}'`
-#major=`ls src/.libs/lib*.so.* | \
-# awk '{if (match($$0,/\.so\.[0-9]+$$/)) print substr($$0,RSTART+4)}'`
+define do-flavour 
 
-build: build-stamp
-build-stamp: patch-stamp
-	dh_testdir
+configure-$(1): configure-$(1)-stamp
+	:
+configure-$(1)-stamp:
+	rm -rf $(CURDIR)/$(builddir)
+	mkdir -p $(CURDIR)/$(builddir)
+	find $(CURDIR)/* -maxdepth 0 -not -path '$(CURDIR)/obj-*' | \
+		xargs cp -rlf -t $(CURDIR)/$(builddir)
+	cd $(builddir) && env NOCONFIGURE=1 sh autogen.sh && ./configure $(CONFIGURE_ARGS_COMMON) $(CONFIGURE_ARGS_$(1)) $(shell dpkg-buildflags --export=configure)
+	touch $$@
 
-	sh autogen.sh --prefix=/usr --disable-examples --disable-gpc --x-includes=/usr/include --x-libraries=/usr/lib
-	$(MAKE)
-	$(MAKE) install DESTDIR=$(CURDIR)/debian/libagg-dev
-	find $(CURDIR)/debian/libagg-dev/usr/lib -name "*.so*" | xargs rm
-	find $(CURDIR)/debian/libagg-dev/usr/lib -name "*.la" | xargs rm
-	$(MAKE) clean
-	./configure --prefix=/usr --disable-examples --with-pic --x-includes=/usr/include --x-libraries=/usr/lib
-	$(MAKE)
-	install -m644 ./font_freetype/.libs/libaggfontfreetype.a \
+build-$(1): build-$(1)-stamp
+	:
+build-$(1)-stamp: configure-$(1)
+	$(MAKE) -C $(builddir)
+	touch $$@
+
+install-$(1): install-$(1)-stamp
+	:
+install-$(1)-stamp: build-$(1)
+	$(MAKE) -C $(builddir) install DESTDIR=$(CURDIR)/$(DESTDIR_$(1))
+	touch $$@
+
+endef
+
+$(foreach f,$(FLAVOURS),$(eval $(call do-flavour,$(f))))
+
+%:
+	dh $@
+
+override_dh_auto_build: $(foreach f,$(FLAVOURS),build-$(f))
+	:
+
+override_dh_auto_install: $(foreach f,$(FLAVOURS),install-$(f))
+
+	install -m644 $(DESTDIR_pic)/usr/lib/libaggfontfreetype.a \
 		$(CURDIR)/debian/libagg-dev/usr/lib/libaggfontfreetype_pic.a
-	install -m644 ./src/platform/sdl/.libs/libaggplatformsdl.a \
+	install -m644 $(DESTDIR_pic)/usr/lib/libaggplatformsdl.a \
 		$(CURDIR)/debian/libagg-dev/usr/lib/libaggplatformsdl_pic.a
-	install -m644 ./src/platform/X11/.libs/libaggplatformX11.a \
+	install -m644 $(DESTDIR_pic)/usr/lib/libaggplatformX11.a \
 		$(CURDIR)/debian/libagg-dev/usr/lib/libaggplatformX11_pic.a
-	install -m644 ./src/.libs/libagg.a \
+	install -m644 $(DESTDIR_pic)/usr/lib/libagg.a \
 		$(CURDIR)/debian/libagg-dev/usr/lib/libagg_pic.a
-	touch build-stamp
 
+        # Remove .so / .la files
+	find $(CURDIR)/debian/libagg-dev/usr/lib/ -name "*.so*" | xargs rm
+	find $(CURDIR)/debian/libagg-dev/usr/lib/ -name "*.la" | xargs rm
 
-clean: patch-stamp clean-patched unpatch
-clean-patched:
-	dh_testdir
-	dh_testroot
-	rm -f build-stamp configure-stamp
-
-	[ ! -f Makefile ] || $(MAKE) distclean
-
-       # Remove all autotools-created files
-	dh_clean Makefile.in aclocal.m4 config.guess config.sub configure \
-	install-sh ltmain.sh missing \
-	examples/Makefile.in font_freetype/Makefile.in gpc/Makefile.in \
-	font_win32_tt/Makefile.in include/Makefile.in include/config.h.in \
-	include/ctrl/Makefile.in include/platform/Makefile.in \
-	include/util/Makefile.in src/Makefile.in src/ctrl/Makefile.in \
-	src/platform/AmigaOS/Makefile.in src/platform/BeOS/Makefile.in \
-	src/platform/Makefile.in src/platform/X11/Makefile.in \
-	src/platform/mac/Makefile.in src/platform/sdl/Makefile.in \
-	src/platform/win32/Makefile.in
-
-binary-indep: build
-
-binary-arch: build
-	dh_testdir
-	dh_testroot
-	dh_installchangelogs ChangeLog
-	dh_installdocs
-	dh_installexamples
-	dh_link
-	dh_strip
-	dh_compress
-	dh_fixperms
-#	dh_makeshlibs
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
-
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install configure
+override_dh_auto_clean:
+	rm -rf $(foreach f,$(FLAVOURS),obj-$(f))
+	rm -rf $(DESTDIR_pic)
+	dh_auto_clean
