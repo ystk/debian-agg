@@ -1,7 +1,7 @@
 Source: agg
 Priority: optional
 Maintainer: Andrea Veri <and@debian.org>
-Build-Depends: debhelper (>= 9), autoconf, automake1.9, libsdl1.2-dev, libfreetype6-dev, pkg-config, libtool, libx11-dev
+Build-Depends: debhelper (>= 9), autoconf, automake1.11, libsdl1.2-dev, libfreetype6-dev, pkg-config, libtool, libx11-dev
 Standards-Version: 3.9.3
 Section: libs
 Homepage: http://www.antigrain.com

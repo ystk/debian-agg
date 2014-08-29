@@ -1,3 +1,10 @@
+agg (2.5+dfsg1-9) unstable; urgency=low
+
+  * Build-Depend on automake1.11, seems agg is still
+    building fine with this automake release. (Closes: #724347)
+
+ -- Andrea Veri <and@debian.org>  Sat, 26 Oct 2013 14:18:09 +0200
+
 agg (2.5+dfsg1-8) unstable; urgency=low
 
   * debian/patches/09-fix-hurd-ftbfs.patch:
