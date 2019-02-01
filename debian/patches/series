@@ -7,3 +7,4 @@
 07-autogen-noconfigure.patch
 08-fix-kfreebsd-ftbfs.patch
 09-fix-hurd-ftbfs.patch
+CVE-2019-6245.patch
